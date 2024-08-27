@@ -2,87 +2,69 @@
 <html>
 <head>
 <style>
-.game-board {
-  width: 400px;
-  height: 400px;
-  border: 1px solid black;
-  position: relative;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
 }
 
-.snake {
-  width: 20px;
-  height: 20px;
-  background-color: blue;
-  position: absolute;
+.weather-window {
+  width: 300px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
-.food {
-  width: 20px;
-  height: 20px;
-  background-color: red;
-  position: absolute;
+.location {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.temperature {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.icon {
+  width: 100px;
+  height: 100px;
 }
 </style>
 </head>
 <body>
 
-<div class="game-board">
-  <div id="snake" class="snake"></div>
-  <div id="food" class="food"></div>
+<div class="weather-window">
+  <div id="location" class="location"></div>
+  <div id="temperature" class="temperature"></div>
+  <div id="description" class="description"></div>
+  <img id="icon" class="icon" src="" alt="">
 </div>
 
 <script>
-const gameBoard = document.querySelector('.game-board');
-const snake = document.getElementById('snake');
-const food = document.getElementById('food');
+const locationElement = document.getElementById('location');
+const temperatureElement = document.getElementById('temperature');
+const descriptionElement = document.getElementById('description');
+const iconElement = document.getElementById('icon');
 
-let snakeX = 0;
-let snakeY = 0;
-let foodX = 0;
-let foodY = 0;
-let direction = 'right';
+// Replace with your own API key and location
+const apiKey = 'YOUR_API_KEY';
+const location = 'YOUR_LOCATION';
 
-function moveSnake() {
-  if (direction === 'right') {
-    snakeX += 20;
-  } else if (direction === 'left') {
-    snakeX -= 20;
-  } else if (direction === 'up') {
-    snakeY -= 20;
-  } else if (direction === 'down') {
-    snakeY += 20;
-  }
-
-  snake.style.left = snakeX + 'px';
-  snake.style.top = snakeY + 'px';
-}
-
-function checkCollision() {
-  if (snakeX === foodX && snakeY === foodY) {
-    // Increase score and move food to a new location
-  } else if (snakeX < 0 || snakeX >= 400 || snakeY < 0 || snakeY >= 400) {
-    // Game over
-  }
-}
-
-function update() {
-  moveSnake();
-  checkCollision();
-}
-
-setInterval(update, 100);
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowRight' && direction !== 'left') {
-    direction = 'right';
-  } else if (e.key === 'ArrowLeft' && direction !== 'right') {
-    direction = 'left';
-  } else if (e.key === 'ArrowUp' && direction !== 'down') {
-    direction = 'up';
-  } else if (e.key === 'ArrowDown' && direction !== 'up') {
-    direction = 'down';
-  }
-});
+fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`)
+  .then(response => response.json())
+  .then(data => {
+    locationElement.textContent = data.name;
+    temperatureElement.textContent = `${data.main.temp}°C`;
+    descriptionElement.textContent = data.weather[0].description;
+    iconElement.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+  });
 </script>
 
 </body>
