@@ -2,52 +2,86 @@
 <html>
 <head>
 <style>
-.square {
-  width: 100px;
-  height: 100px;
+.game-board {
+  width: 400px;
+  height: 400px;
+  border: 1px solid black;
+  position: relative;
+}
+
+.snake {
+  width: 20px;
+  height: 20px;
   background-color: blue;
-  border: 5px solid blue;
   position: absolute;
-  animation: rotate 2s linear infinite, pulse 2s ease-in-out infinite;
 }
 
-@keyframes rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes pulse {
-  0% { border-width: 5px; }
-  50% { border-width: 10px; }
-  100% { border-width: 5px; }
+.food {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  position: absolute;
 }
 </style>
 </head>
 <body>
 
-<div id="square" class="square"></div>
+<div class="game-board">
+  <div id="snake" class="snake"></div>
+  <div id="food" class="food"></div>
+</div>
 
 <script>
-const square = document.getElementById('square');
+const gameBoard = document.querySelector('.game-board');
+const snake = document.getElementById('snake');
+const food = document.getElementById('food');
 
-let isDragging = false;
-let offsetX, offsetY;
+let snakeX = 0;
+let snakeY = 0;
+let foodX = 0;
+let foodY = 0;
+let direction = 'right';
 
-square.addEventListener('mousedown', (e) => {
-  isDragging = true;
-  offsetX = e.clientX - square.getBoundingClientRect().left;
-  offsetY = e.clientY - square.getBoundingClientRect().top;
-});
-
-document.addEventListener('mousemove', (e) => {
-  if (isDragging) {
-    square.style.left = (e.clientX - offsetX) + 'px';
-    square.style.top = (e.clientY - offsetY) + 'px';
+function moveSnake() {
+  if (direction === 'right') {
+    snakeX += 20;
+  } else if (direction === 'left') {
+    snakeX -= 20;
+  } else if (direction === 'up') {
+    snakeY -= 20;
+  } else if (direction === 'down') {
+    snakeY += 20;
   }
-});
 
-document.addEventListener('mouseup', () => {
-  isDragging = false;
+  snake.style.left = snakeX + 'px';
+  snake.style.top = snakeY + 'px';
+}
+
+function checkCollision() {
+  if (snakeX === foodX && snakeY === foodY) {
+    // Increase score and move food to a new location
+  } else if (snakeX < 0 || snakeX >= 400 || snakeY < 0 || snakeY >= 400) {
+    // Game over
+  }
+}
+
+function update() {
+  moveSnake();
+  checkCollision();
+}
+
+setInterval(update, 100);
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' && direction !== 'left') {
+    direction = 'right';
+  } else if (e.key === 'ArrowLeft' && direction !== 'right') {
+    direction = 'left';
+  } else if (e.key === 'ArrowUp' && direction !== 'down') {
+    direction = 'up';
+  } else if (e.key === 'ArrowDown' && direction !== 'up') {
+    direction = 'down';
+  }
 });
 </script>
 
