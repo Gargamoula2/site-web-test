@@ -1,71 +1,48 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-}
+    <style>
+        .square {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            border: 5px solid blue;
+            animation: rotate 2s linear infinite, pulse 2s ease-in-out infinite;
+        }
 
-.weather-window {
-  width: 300px;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-}
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
 
-.location {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
+            100% {
+                transform: rotate(360deg);
+            }
+        }
 
-.temperature {
-  font-size: 48px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
+        @keyframes pulse {
+            0% {
+                border-width: 5px;
+            }
 
-.description {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
+            50% {
+                border-width: 10px;
+            }
 
-.icon {
-  width: 100px;
-  height: 100px;
-}
-</style>
+            100% {
+                border-width: 5px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="weather-window">
-  <div id="location" class="location"></div>
-  <div id="temperature" class="temperature"></div>
-  <div id="description" class="description"></div>
-  <img id="icon" class="icon" src="" alt="">
-</div>
-
-<script>
-const locationElement = document.getElementById('location');
-const temperatureElement = document.getElementById('temperature');
-const descriptionElement = document.getElementById('description');
-const iconElement = document.getElementById('icon');
-
-// Replace with your own API key and location
-const apiKey = 'YOUR_API_KEY';
-const location = 'YOUR_LOCATION';
-
-fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`)
-  .then(response => response.json())
-  .then(data => {
-    locationElement.textContent = data.name;
-    temperatureElement.textContent = `${data.main.temp}°C`;
-    descriptionElement.textContent = data.weather[0].description;
-    iconElement.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
-  });
-</script>
+    <div class="square"></div>
 
 </body>
+
+<h1>Stephanie est la plus belle</h1>
+
 </html>
