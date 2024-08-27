@@ -1,1 +1,55 @@
-<html><h1>Bonjour</h1></html>
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.square {
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+  border: 5px solid blue;
+  position: absolute;
+  animation: rotate 2s linear infinite, pulse 2s ease-in-out infinite;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0% { border-width: 5px; }
+  50% { border-width: 10px; }
+  100% { border-width: 5px; }
+}
+</style>
+</head>
+<body>
+
+<div id="square" class="square"></div>
+
+<script>
+const square = document.getElementById('square');
+
+let isDragging = false;
+let offsetX, offsetY;
+
+square.addEventListener('mousedown', (e) => {
+  isDragging = true;
+  offsetX = e.clientX - square.getBoundingClientRect().left;
+  offsetY = e.clientY - square.getBoundingClientRect().top;
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (isDragging) {
+    square.style.left = (e.clientX - offsetX) + 'px';
+    square.style.top = (e.clientY - offsetY) + 'px';
+  }
+});
+
+document.addEventListener('mouseup', () => {
+  isDragging = false;
+});
+</script>
+
+</body>
+</html>
